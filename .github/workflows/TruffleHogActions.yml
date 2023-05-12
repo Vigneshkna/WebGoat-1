@@ -18,10 +18,8 @@ jobs:
         if: failure()
         run: |
             echo "Secrets found"
-            continue-on-error: true 
       - name: Notify dedicated teams channel for secrets not found
         if: success()
         run: | 
             echo "No Secrets Found"
             exit 0
-            continue-on-error: true 
