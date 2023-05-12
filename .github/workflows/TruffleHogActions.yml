@@ -17,12 +17,12 @@ jobs:
       - name: Notify dedicated teams channel for secrets
         if: failure()
         run: |
-          curl -H 'Content-Type: application/json' -d ' {"text": "Your application(Application Name) has secrets" }'  ${{ secrets.webhook}}
+          # curl -H 'Content-Type: application/json' -d ' {"text": "Your application(Application Name) has secrets" }'  ${{ secrets.webhook}}
             echo "Secrets found"
             continue-on-error: true 
       - name: Notify dedicated teams channel for secrets not found
         if: success()
         run: | 
-            echo "No Secrets"
+            echo "No Secrets Found"
             exit 0
             continue-on-error: true 
