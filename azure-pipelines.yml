@@ -17,3 +17,17 @@ steps:
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      docker run -v "$(pwd):/workdir" -i --rm trufflesecurity/trufflehog:latest git file:///workdir --max-depth 10 --only-verified --fail
+      status=$?
+       echo $status
+      if [ $status -eq 183 ]
+      then
+       curl -H 'Content-Type: application/json' -d ' {"text": "Your application(ApplicationName) has secrets" }' $(WEBHOOK)
+      else
+        exit 0
+      fi
