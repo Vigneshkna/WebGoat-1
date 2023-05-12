@@ -6,20 +6,38 @@ jobs:
   scanning:
     name: TruffleHog Enterprise scan
     runs-on: ubuntu-latest
+    # steps:
+    #   - name: checkout
+    #     uses: actions/checkout@v3
+    #   - name: Running Trufflehog scan
+    #     run: |
+    #         docker run -v "$(pwd):/workdir" -i --rm trufflesecurity/trufflehog:latest git file:///workdir --max-depth 10 --only-verified --fail
+    #         echo "Docker Done"
+    #         if: always()
+    #   - name: Notify dedicated teams channel for secrets
+    #     if: failure()
+    #     run: |  
+    #         echo "Secrets found"
+    #   - name: Notify dedicated teams channel for secrets not found
+    #     if: success()
+    #     run: | 
+    #         echo "No Secrets Found"
+    #         exit 0
     steps:
-      - name: checkout
-        uses: actions/checkout@v3
-      - name: Running Trufflehog scan
+      - uses: actions/checkout@v1
+      - name: trufflehogscanning
+        id: scan
+        continue-on-error: false
         run: |
-            docker run -v "$(pwd):/workdir" -i --rm trufflesecurity/trufflehog:latest git file:///workdir --max-depth 10 --only-verified --fail
-            echo "Docker Done"
-            if: always()
+         docker run -v "$(pwd):/workdir" -i --rm trufflesecurity/trufflehog:latest git file:///workdir --max-depth 10 --only-verified --fail
+        if: always()
       - name: Notify dedicated teams channel for secrets
-        if: failure()
+        if: failure() 
         run: |
-            echo "Secrets found"
+           echo "Secrets found"
+        continue-on-error: true 
       - name: Notify dedicated teams channel for secrets not found
         if: success()
-        run: | 
-            echo "No Secrets Found"
-            exit 0
+        run: |
+              echo "No Secrets"
+        continue-on-error: true 
