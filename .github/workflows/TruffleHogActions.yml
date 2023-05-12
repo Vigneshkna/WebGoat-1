@@ -12,17 +12,17 @@ jobs:
       - name: Running Trufflehog scan
         run: |
             docker run -v "$(pwd):/workdir" -i --rm trufflesecurity/trufflehog:latest git file:///workdir --max-depth 10 --only-verified --fail
-
+            echo "Docker Done"
             if: always()
-              - name: Notify dedicated teams channel for secrets
-            if: failure() 
-            run: |
-            curl -H 'Content-Type: application/json' -d ' {"text": "Your application(Application Name) has secrets" }'  ${{ secrets.webhook}}
+      - name: Notify dedicated teams channel for secrets
+        if: failure()
+        run: |
+          curl -H 'Content-Type: application/json' -d ' {"text": "Your application(Application Name) has secrets" }'  ${{ secrets.webhook}}
             echo "Secrets found"
             continue-on-error: true 
-              - name: Notify dedicated teams channel for secrets not found
-            if: success()
-            run: | 
+      - name: Notify dedicated teams channel for secrets not found
+        if: success()
+        run: | 
             echo "No Secrets"
             exit 0
             continue-on-error: true 
