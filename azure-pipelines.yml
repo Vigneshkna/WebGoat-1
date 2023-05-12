@@ -23,7 +23,7 @@ steps:
     targetType: 'inline'
     script: |
       echo "-----------Docker Started-----------"
-      docker run -v "$(pwd):/workdir" -i --rm trufflesecurity/trufflehog:latest git file:///workdir --only-verified --fail
+      docker run -v "$(pwd):/workdir" -i --rm trufflesecurity/trufflehog:latest git file:///workdir --entropy=True --only-verified --fail
       status=$?
        echo $status
       if [ $status -eq 183 ]
