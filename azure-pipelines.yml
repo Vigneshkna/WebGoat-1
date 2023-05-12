@@ -22,12 +22,15 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
+      echo "-----------Docker Started-----------"
       docker run -v "$(pwd):/workdir" -i --rm trufflesecurity/trufflehog:latest git file:///workdir --max-depth 10 --only-verified --fail
       status=$?
        echo $status
       if [ $status -eq 183 ]
       then
+       echo "-----------Secret Detected-----------"
        curl -H 'Content-Type: application/json' -d ' {"text": "Your application(ApplicationName) has secrets" }' $(WEBHOOK)
       else
+       echo "-----------No Secret Found-----------"
         exit 0
       fi
