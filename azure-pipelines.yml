@@ -30,7 +30,7 @@ steps:
       if [ $status -eq 183 ]
       then
        echo "-----------Secret Detected-----------"
-       curl -H 'Content-Type: application/json' -d ' {"text": "Your application(ApplicationName) has secrets" }' $(WEBHOOK)
+       #curl -H 'Content-Type: application/json' -d ' {"text": "Your application(ApplicationName) has secrets" }' $(WEBHOOK)
       else
        echo "-----------No Secret Found-----------"
         exit 0
