@@ -30,7 +30,6 @@ jobs:
       - name: trufflehogSec
         run: |
          echo ${{ github.event.repository.default_branch }}
-         docker run -v "$(pwd):/workdir" -it --rm us-docker.pkg.dev/thog-artifacts/public/scanner:latest git --fail-verified main HEAD /workdir
          
       - name: TruffleHogEnterprisescan
         uses: trufflesecurity/TruffleHog-Enterprise-Github-Action@main
